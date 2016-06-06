@@ -48,11 +48,17 @@ m:on("message", function(conn, topic, message)
 end)
 
 
--- m:connect(host, port, secure, auto_reconnect, function(client) end)
-m:connect(ADDRESS, PORT, 0, 1, function(conn)
-  CONNECTED = 1
-  m:subscribe("/light_level", 0)--, function(conn) print("subscribe success") end)
-  m:subscribe("/mode", 0)--, function(conn) print("subscribe success") end)
+tmr.alarm(1, 1500, 1, function()
+  if wifi.sta.status() == 5 then
+    tmr.stop(1)
+    -- m:connect(host, port, secure, auto_reconnect, function(client) end)
+    m:connect(ADDRESS, PORT, 0, 1, function(conn)
+      CONNECTED = 1
+      m:subscribe("/light_level", 0)
+      m:subscribe("/mode", 0)
+      m:subscribe("/target", 0)
+    end)
+  end
 end)
 
 
